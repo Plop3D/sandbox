@@ -1,36 +1,25 @@
 /* eslint-disable consistent-return, no-console */
 const express = require('express');
-const createWebpackMiddleware = require('webpack-express-middleware');
 const path = require('path')
-const app = express();
-const pack = express();
-const video = express();
 const config = require('./webpack.config');
-
 const ip = process.env.IP || require('ip').address()
 const port = process.env.PORT || 8443
-
-video.get('*', function(req, res) {
-  res.sendFile(path.resolve(__dirname + '/build/video.html'))
-});
-
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-if (isDevelopment) {
+if (isDevelopment){
+  const app = express();
+  const video = express();
+  video.get('*', function(req, res) {
+    res.sendFile(path.resolve(__dirname + '/public/video.html'))
+  });
+  app.use('/video', video)
+
+  const pack = express();
+  const createWebpackMiddleware = require('webpack-express-middleware');
   const compiler = require('webpack')(config);
   const webpackMiddleware = createWebpackMiddleware(compiler, config);
   webpackMiddleware(pack);
-} else {
-  pack.use(express.static(__dirname + '/build'));
-  pack.get('/', function(req, res) {
-    res.sendFile(__dirname + "/build/index.html");
-  });
-}
-
-app.use('/video', video)
-app.use('/', pack)
-
-if (port === 8443) {
+  app.use('/', pack)
   const https = require('https')
   const fs = require('fs')
   const key = fs.readFileSync('config/ssl.key')
@@ -46,6 +35,15 @@ if (port === 8443) {
 } else {
   const http = require('http')
   http.createServer(app).listen(port)
+  let router = app.Router({strict: true})
+  router.get('/video', function(req, res) {
+    res.sendFile(path.resolve(config.output.path + '/video.html'))
+  });
+  router.get('/', function(req, res) {
+    res.sendFile(path.resolve(config.output.path + '/index.html'))
+  });
+  app.use(router)
+  app.use(express.static(path.resolve(config.output.path)));
 }
 
 
