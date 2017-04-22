@@ -21,12 +21,18 @@ webpackMiddleware(pack);
 app.use('/video', video)
 app.use('/', pack)
 
+let server
+if (port === 8443) {
+  const https = require('https')
+  const fs = require('fs')
+  const key = fs.readFileSync('config/ssl.key')
+  const cert = fs.readFileSync('config/ssl.crt')
+  server = https.createServer({ key: key, cert: cert }, app)
+} else {
+  const https = require('https')
+  server = https.createServer(app)
+}
 
-const https = require('https')
-const fs = require('fs')
-const key = fs.readFileSync('config/ssl.key')
-const cert = fs.readFileSync('config/ssl.crt')
-let server = https.createServer({ key: key, cert: cert }, app)
 server.listen(port, function(err) {
   if (!err) {
     console.log('Listening at ' + 'https://' + ip + ':' + port + '/')
