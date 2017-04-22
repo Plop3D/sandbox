@@ -33,9 +33,10 @@ if (isDevelopment){
       }
     })
 } else {
+  const app = express();
   const http = require('http')
   http.createServer(app).listen(port)
-  let router = app.Router({strict: true})
+  let router = express.Router({strict: true})
   router.get('/video', function(req, res) {
     res.sendFile(path.resolve(config.output.path + '/video.html'))
   });
