@@ -1,0 +1,46 @@
+{
+  "name": "sandbox",
+  "version": "1.0.0",
+  "description": "Boilerplate for building virtual reality experiences with A-Frame and React.",
+  "dependencies": {
+    "aframe": "^0.5.0",
+    "aframe-animation-component": "^3.2.5",
+    "aframe-particle-system-component": "^1.0.8",
+    "aframe-react": "^4.0.x",
+    "babel-polyfill": "^6.3.14",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-scripts": "0.9.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "publish": "npm run build && gh-pages -d build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plop3d/sandbox.git"
+  },
+  "keywords": [
+    "aframe",
+    "react",
+    "vr",
+    "boilerplate",
+    "a-frame",
+    "mozvr",
+    "reactvr",
+    "aframe-react",
+    "webvr"
+  ],
+  "author": "drmnick",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plop3d/sandbox/issues"
+  },
+  "homepage": "https://github.com/plop3d/sandbox#readme",
+  "devDependencies": {
+    "gh-pages": "^0.12.0"
+  }
+}
