@@ -12,7 +12,7 @@ const ip = process.env.IP || require('ip').address()
 const port = process.env.PORT || 8443
 
 video.get('*', function(req, res) {
-  res.sendFile(path.resolve(__dirname + '/public/video.html'))
+  res.sendFile(path.resolve(__dirname + '/build/video.html'))
 });
 
 const webpackMiddleware = createWebpackMiddleware(compiler, config);
