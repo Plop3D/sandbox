@@ -47,7 +47,7 @@
       "^components$": "<rootDir>/test/componentsMock.js"
     }
   },
-  "devDependencies": {
+  "dependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.2",
@@ -84,9 +84,7 @@
     "rimraf": "^2.6.1",
     "sinon": "^1.17.6",
     "ssh-exec": "^2.0.0",
-    "url-loader": "^0.5.8"
-  },
-  "dependencies": {
+    "url-loader": "^0.5.8",
     "aframe": "^0.5.0",
     "aframe-event-set-component": "^3.0.1",
     "aframe-extras": "^3.7.0",
