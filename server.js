@@ -10,11 +10,8 @@ const compiler = require('webpack')(config);
 
 const ip = process.env.IP || require('ip').address()
 const port = process.env.PORT || 8443
-app.set('port', port);
-app.set('host', ip);
 
-
-video.get('*', function(req, res){
+video.get('*', function(req, res) {
   res.sendFile(path.resolve(__dirname + '/public/video.html'))
 });
 
@@ -24,10 +21,16 @@ webpackMiddleware(pack);
 app.use('/video', video)
 app.use('/', pack)
 
-app.listen(app.get('port'), app.get('host'), function(err) {
+
+const https = require('https')
+const fs = require('fs')
+const key = fs.readFileSync('config/ssl.key')
+const cert = fs.readFileSync('config/ssl.crt')
+let server = https.createServer({ key: key, cert: cert }, app)
+server.listen(port, function(err) {
   if (!err) {
     console.log('Listening at ' + 'https://' + ip + ':' + port + '/')
   } else {
     console.log(err)
   }
-});
+})

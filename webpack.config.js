@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ip = process.env.IP || require('ip').address()
 const port = process.env.PORT || 3000
 const DEBUG = process.env.NODE_ENV !== 'production'
-const PUBLIC_PATH = `/${process.env.PUBLIC_PATH || ''}/`.replace('//', '/')
+const PUBLIC_PATH = `/${process.env.PUBLIC_PATH || 'public'}/`.replace('//', '/')
 
 const isVendor = ({ userRequest }) => (
   userRequest &&
@@ -39,7 +39,7 @@ const config = {
   ],
   module: {
     rules: [
-      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
+      { test: /\.js$/, loader: 'babel-loader' },
       { test: /\.png$/, loader: 'url-loader?prefix=images/&limit=8000&mimetype=image/png' },
       { test: /\.jpg$/, loader: 'url-loader?prefix=images/&limit=8000&mimetype=image/jpeg' },
       { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?prefix=fonts/&limit=8000&mimetype=application/font-woff' },
@@ -48,13 +48,7 @@ const config = {
       { test: /\.css$/, loader: 'css-loader' },
       { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader' },
     ],
-  },
-  // hot: true,
-  // host: ip,
-  // stats: false,
-  // historyApiFallback: true,
-  // contentBase: 'public',
-  // https: true
+  }
 }
 
 if (DEBUG) {
