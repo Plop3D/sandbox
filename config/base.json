@@ -1,0 +1,12 @@
+{
+  "lighterRun": {
+    "live": [
+      "public",
+      "vendor",
+      "views"
+    ],
+    "watchDirs": [
+      "./"
+    ]
+  }
+}

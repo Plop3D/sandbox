@@ -10,10 +10,33 @@
     "babel-polyfill": "^6.3.14",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-scripts": "0.9.5"
+    "react-scripts": "0.9.5",
+    "adm-zip": "^0.4.7",
+    "body-parser": "^1.16.1",
+    "cedar": "^0.3.2",
+    "chug": "^0.4.2",
+    "cute": "^0.0.5",
+    "express": "^4.14.1",
+    "glob": "^7.1.1",
+    "ip": "^1.1.4",
+    "jsdom": "^9.12.0",
+    "lighter-config": "^1.1.0",
+    "lighter-json": "^2.0.0",
+    "lighter-lru-cache": "^1.1.0",
+    "lighter-run": "^1.1.0",
+    "lighter-spawn": "^1.0.0",
+    "lighter-type": "^2.2.1",
+    "ltl": "^0.3.1",
+    "obj-exporter": "^0.1.0",
+    "request": "^2.81.0",
+    "socket.io": "^1.7.3",
+    "stl": "^1.1.1",
+    "three": "^0.84.0",
+    "unzip": "^0.1.11",
+    "webvr-polyfill": "^0.9.25"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts build && node index",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
@@ -39,8 +62,8 @@
   "bugs": {
     "url": "https://github.com/plop3d/sandbox/issues"
   },
-  "homepage": "https://github.com/plop3d/sandbox#readme",
   "devDependencies": {
-    "gh-pages": "^0.12.0"
+    "gh-pages": "^0.12.0",
+    "exam": "^2.1.0"
   }
 }
