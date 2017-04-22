@@ -4,7 +4,12 @@ import 'aframe-particle-system-component';
 import 'babel-polyfill';
 import {Entity, Scene} from 'aframe-react';
 import React from 'react';
-import Video from "./video";
+
+window.moveFinger = function (data) {
+    // var finger = Cute.one('#' + data.name + '-finger')
+    // var position = data.x + ' ' + data.y + ' ' + data.z
+    // Cute.attr(finger, 'position', position)
+}
 
 export default class App extends React.Component {
     constructor(props) {
@@ -22,7 +27,16 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <Video/>
+                <iframe src="/video"
+                        style={{
+                            position: "absolute",
+                            left: 0,
+                            top: 0,
+                            width: 240 + 'px',
+                            height: 180 + 'px',
+                            "z-index": 9999
+                        }}
+                        frameborder="0"/>
                 <Scene>
                     <a-assets>
                         <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg"/>
