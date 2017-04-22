@@ -6,7 +6,6 @@ const app = express();
 const pack = express();
 const video = express();
 const config = require('./webpack.config');
-const compiler = require('webpack')(config);
 
 const ip = process.env.IP || require('ip').address()
 const port = process.env.PORT || 8443
@@ -15,8 +14,18 @@ video.get('*', function(req, res) {
   res.sendFile(path.resolve(__dirname + '/build/video.html'))
 });
 
-const webpackMiddleware = createWebpackMiddleware(compiler, config);
-webpackMiddleware(pack);
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
+if (isDevelopment) {
+  const compiler = require('webpack')(config);
+  const webpackMiddleware = createWebpackMiddleware(compiler, config);
+  webpackMiddleware(pack);
+} else {
+  app.use(express.static(config.output.path));
+  app.get('/', function(req, res) {
+    res.sendFile(config.output.path + "/index.html");
+  });
+}
 
 app.use('/video', video)
 app.use('/', pack)
