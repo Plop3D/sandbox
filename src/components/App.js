@@ -4,6 +4,7 @@ import {
   Lights,
   Sky,
   VRScene,
+  Camera,
   LeftController,
   RightController,
   Plane,
@@ -43,6 +44,7 @@ class App extends React.Component {
           scale={{ x: 0.5, y: 0.5, z: 0.5 }}
         />
 
+	<Camera />
         <Sky />
         <Lights />
         <Plane />
