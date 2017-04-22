@@ -16,7 +16,7 @@
     "build:prod": "cross-env NODE_ENV=production webpack -p",
     "prebuild": "npm run build:clean && npm run build:copy",
     "build": "cross-env NODE_ENV=production webpack",
-    "postinstall": "npm run build:clean && npm run build:copy && npm run build"
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",

@@ -21,8 +21,8 @@ if (isDevelopment) {
   const webpackMiddleware = createWebpackMiddleware(compiler, config);
   webpackMiddleware(pack);
 } else {
-  app.use(express.static(config.output.path));
-  app.get('/', function(req, res) {
+  pack.use(express.static(config.output.path));
+  pack.get('/', function(req, res) {
     res.sendFile(config.output.path + "/index.html");
   });
 }
