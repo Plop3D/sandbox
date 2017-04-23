@@ -110,7 +110,6 @@ if (isDevelopment) {
     res.sendFile(path.resolve(config.output.path + '/video.html'))
   });
   router.get('/',
-    require('connect-ensure-login').ensureLoggedIn('/login/facebook'),
     function(req, res) {
       res.sendFile(path.resolve(config.output.path + '/index.html'))
     });
