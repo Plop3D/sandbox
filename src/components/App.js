@@ -8,9 +8,9 @@ import {
   RightController,
   Fingers,
   Camera,
-  Primitives
+  Primitives,
+  LoginBox
 } from 'components'
-import {AttentionBox, SettingsPanel} from 'containers'
 
 class App extends React.Component {
   componentDidMount() {
@@ -34,15 +34,14 @@ class App extends React.Component {
           width: 240 + 'px',
           height: 180 + 'px',
           zIndex: 9999
-        }}/>
+        }} frameBorder="0"/>
         <VRScene>
+          <LoginBox/>
           <LeftController />
           <RightController />
           <Sky />
           <Lights />
-          <Camera position='0 1.6 0' data-aframe-default-camera rotation
-                  wasd-controls look-controls aframe-injected
-                  scale visible>
+          <Camera>
             <Fingers/>
           </Camera>
           <Primitives />
