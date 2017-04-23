@@ -1,3 +1,4 @@
+<%= if(user) { %>
 <div style="background: rgba(0, 0, 0, 0.85); position: relative; left: -50%; width: 270px; padding: 20px; margin: 20px">
 <span style="color: #fff; textAlign: right; right: 10px">
     <a href="#" onclick="parent.closeLoginBox()" style="color: #81d1ef">Close [x]</a>
@@ -6,3 +7,7 @@
     Welcome&nbsp;<%= user.displayName.split(' ')[0] %></h3>
   <img alt="<%= user.displayName %>" src="<%= user.photos[0].value %>"/>
 </div>
+<%= } else { %>
+<script type="application/javascript">parent.closeLoginBox()</script>
+<%= } %>
+
