@@ -1,7 +1,7 @@
 // Vendor
 import './datguivr'
 
-// MathworldVR components
+// Plop3D components
 import './components/datgui'
 import './components/grid'
 import './components/parametricfunction'

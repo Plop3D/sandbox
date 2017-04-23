@@ -6,11 +6,10 @@ import {
   VRScene,
   LeftController,
   RightController,
-  Plane,
   Fingers,
   Camera
 } from 'components'
-import {AttentionBox, Calculator, FunctionBox, ParametricFunction, SettingsPanel} from 'containers'
+import {AttentionBox, SettingsPanel} from 'containers'
 
 class App extends React.Component {
   componentDidMount() {
@@ -40,7 +39,6 @@ class App extends React.Component {
           <RightController />
           <Sky />
           <Lights />
-          <Plane />
           <Camera position='0 1.6 0' data-aframe-default-camera rotation
                   wasd-controls look-controls aframe-injected
                   scale visible>
