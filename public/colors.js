@@ -231,7 +231,7 @@ Cute.ready(function () {
       var last = paths[1]
       if (first && last) {
         var d = getDistance2d(first, last)
-        console.log(first, last, d)
+        //console.log(first, last, d)
         if (d < first.radius) {
           paths.pop()
         }

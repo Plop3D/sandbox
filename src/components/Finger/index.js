@@ -58,9 +58,6 @@ export default class Fingers extends React.Component {
       that.state.hands[data.id].position = { x: data.x, y: data.y, z: data.z }
       that.setState(that.state)
     }
-    window.emit = (type, data) => {
-      console.log(type, data)
-    }
   }
 
   render() {
