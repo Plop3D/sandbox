@@ -6,11 +6,10 @@ import {
   VRScene,
   LeftController,
   RightController,
-  Plane,
   Fingers,
   Camera
 } from 'components'
-import {AttentionBox, Calculator, FunctionBox, ParametricFunction, SettingsPanel} from 'containers'
+import {AttentionBox, SettingsPanel} from 'containers'
 
 class App extends React.Component {
   componentDidMount() {

@@ -1,23 +1,23 @@
-<h1 align="center">MathworldVR</h1>
+<h1 align="center">Plop3D</h1>
 
-<p align="center"><a href="http://vr.sld.gs/mathworldvr/" target="_blank"><img width="500" alt="MathworldVR" src="https://raw.githubusercontent.com/michaltakac/mathworldvr/master/public/mathworldvr.jpg"></a></p>
+<p align="center"><a href="https://plop3d.herokuapp.com/" target="_blank"><img width="500" alt="Plop3D" src="https://raw.githubusercontent.com/plop3d/plop3d/master/public/plop3d.jpg"></a></p>
 
 <p align="center">WebVR math platform made with A-Frame, Three.js, React, Redux.</p>
 
 <p align="center">
-  <a href="https://travis-ci.org/michaltakac/mathworldvr"><img src="https://img.shields.io/travis/michaltakac/mathworldvr.svg?style=flat-square" alt="Build Status"></a>
-  <a href="https://codecov.io/gh/michaltakac/mathworldvr">
-    <img src="https://img.shields.io/codecov/c/github/michaltakac/mathworldvr.svg?style=flat-square" alt="Coverage Status">
+  <a href="https://travis-ci.org/plop3d/plop3d"><img src="https://img.shields.io/travis/plop3d/plop3d.svg?style=flat-square" alt="Build Status"></a>
+  <a href="https://codecov.io/gh/plop3d/plop3d">
+    <img src="https://img.shields.io/codecov/c/github/plop3d/plop3d.svg?style=flat-square" alt="Coverage Status">
   </a>
-  <a href="https://codeclimate.com/github/michaltakac/mathworldvr/"><img src="https://img.shields.io/codeclimate/github/michaltakac/mathworldvr.svg?style=flat-square" alt="Code climate"></a>
-  <img src="https://img.shields.io/github/tag/michaltakac/mathworldvr.svg?style=flat-square" alt="Tag">
-  <img src="https://img.shields.io/github/license/michaltakac/mathworldvr.svg?style=flat-square" alt="License">
+  <a href="https://codeclimate.com/github/plop3d/plop3d/"><img src="https://img.shields.io/codeclimate/github/plop3d/plop3d.svg?style=flat-square" alt="Code climate"></a>
+  <img src="https://img.shields.io/github/tag/plop3d/plop3d.svg?style=flat-square" alt="Tag">
+  <img src="https://img.shields.io/github/license/plop3d/plop3d.svg?style=flat-square" alt="License">
 </p>
 
 ## Usage
 
 - Download and install a [WebVR-enabled browser](https://webvr.info/get-chrome/). Currently only the experimental Chromium build on Windows supports the Vive controllers. (You will need to enable these flags for WebVR and Gamepad Extensions: `chrome://flags#enable-webvr` and `chrome://flags#enable-gamepad-extensions`.)
-- Visit [http://vr.sld.gs/mathworldvr/](http://vr.sld.gs/mathworldvr/) and play with the math functions.
+- Visit [https://plop3d.herokuapp.com/](https://plop3d.herokuapp.com/) and play with the math functions.
 
 ## Libraries
 
@@ -32,7 +32,7 @@
 
 ## App state in predictable state container
 
-MathworldVR uses Redux for all the stuff around the app's state. It helps you write applications that behave consistently. On top of that, it provides a great developer experience, such as live code editing combined with a time traveling debugger. For example, CalcButton component
+Plop3D uses Redux for all the stuff around the app's state. It helps you write applications that behave consistently. On top of that, it provides a great developer experience, such as live code editing combined with a time traveling debugger. For example, CalcButton component
 used as a backspace on calculator is dispatching Redux action when user "clicks it" with VR hand-controller!
 
 Stateless Calculator component:
@@ -103,7 +103,7 @@ export default class CalcButton extends React.Component {
 First, fork the project. Then:
 
 ```bash
-git clone git@github.com:yourusername/mathworldvr && cd mathworldvr
+git clone git@github.com:yourusername/plop3d && cd plop3d
 npm install // or yarn install
 npm start
 ```
@@ -118,11 +118,11 @@ npm run build
 
 ## Questions
 
-For questions and support, [ask on StackOverflow](http://stackoverflow.com/questions/ask/?tags=mathworldvr).
+For questions and support, [ask on StackOverflow](http://stackoverflow.com/questions/ask/?tags=plop3d).
 
 ## Stay in Touch
 
-- [Follow @michaltakac on Twitter](https://twitter.com/michaltakac).
+- [Follow @plop3d on Twitter](https://twitter.com/plop3d).
 
 ## A-Frame Community
 

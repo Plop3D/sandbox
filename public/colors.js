@@ -18,13 +18,7 @@ Cute.ready(function () {
   // Canvas dimensions.
   var width, height
 
-  // Fake pixel.
-  var out = {color: null}
-
   var scale = 5, offset = scale / 2, sx, sy
-  var smoothing = 5
-  var isDrawing = false
-  var isGrabbing = false
 
   // Size everything to the video dimensions.
   Cute.on(video, 'resize', function () {
@@ -217,9 +211,20 @@ Cute.ready(function () {
   function emit () {
     colors.forEach(function (color) {
       color.shapes = []
-      var paths = color.paths.sort(function (a, b) {
+      var paths = color.paths
+      var l = paths.length
+      Cute.each(paths, function (path) {
+        Cute.each(path.pixels, function (pixel) {
+          pixel.path = null
+        })
+      })
+      for (var i = l - 1; i > 0; i--) {
+
+      }
+      paths = paths.sort(function (a, b) {
         return b.score - a.score
-      }).slice(0, 2)
+      })
+      paths = paths.slice(0, 2)
       for (i = 0, l = paths.length; i < l; i++) {
         var path = paths[i]
         var pixels = path.pixels
@@ -236,19 +241,22 @@ Cute.ready(function () {
           var shape = new Point()
           var size = Math.max(path.radius * 2, 1) / width
           if (window.isMobile) {
-            shape.x = (path.x / width - 0.5) / size / 8
-            shape.y = (0.5 - path.y / height) / size / 8
-            shape.z = -0.2 / size
+            shape.x = (path.x / width - 0.5) / size / 4
+            shape.y = (0.5 - path.y / height) / size / 4
+            shape.z = -0.1 / size
           } else {
-            shape.x = (0.5 - path.x / width) / size / 8
-            shape.y = (0.5 - path.y / height) / size / 8
-            shape.z = 0.2 / size - 6
+            shape.x = (0.5 - path.x / width) / size / 4
+            shape.y = (0.5 - path.y / height) / size / 4
+            shape.z = 0.1 / size - 4
           }
           color.shapes.push(shape)
         }
       }
       color.paths = []
       color.updateFingers()
+    })
+    Cute.each(hands, function (hand) {
+      hand.update()
     })
   }
 })
@@ -363,9 +371,70 @@ var Hand = Cute.type(Point, function (name) {
   this.fingers = []
   new Finger('thumb', GREEN, this)
   new Finger('index', YELLOW, this)
-  this.gesture = null
   hands.push(this)
-}, {})
+
+  this.gesture = null
+}, {
+  update: function () {
+    var thumb = this.fingers[0]
+    var index = this.fingers[1]
+    this.x = (index.x + thumb.x) / 2
+    this.y = (index.y + thumb.y) / 2
+    this.z = (index.z + thumb.z) / 2
+    var dx = index.x - thumb.x
+    var dy = index.y - thumb.y
+    var dz = index.z - thumb.z
+    this.vector = new Point(dx, dy, dz)
+    this.gap = getDistance(index, thumb)
+
+    var gesture = null
+    if (this.gap < 0.4) {
+      gesture = 'grab'
+    } else if (dy < -0.4 && this.gap > 0.6) {
+      gesture = 'fly'
+    } else if ((dy > 1.2) && Math.sqrt(dx * dx + dz * dz) < 0.3) {
+      gesture = 'menu'
+    } else if (dz < -0.9) {
+      gesture = 'point'
+    }
+
+    parent.emit('move:hand', this)
+
+    // If the gesture for this hand is different, end and/or start.
+    if (gesture !== this.gesture) {
+      if (this.gesture) {
+        parent.emit(this.gesture + ':end', this)
+      }
+      if (gesture) {
+        this.gesture = gesture
+        parent.emit(gesture + ':start', this)
+      } else {
+        this.gesture = null
+      }
+    // If the gesture exists and hasn't changed, move.
+    } else if (gesture) {
+      parent.emit(gesture + ':move', this)
+    }
+  },
+  updateGesture: function (type, active) {
+    var gestures = this.gestures
+    var doc = parent.document
+    var change
+    if (active) {
+      change = type + (gestures[type] ? ':move': ':start')
+      gestures[type] = true
+    } else {
+      if (gestures[type]) {
+        change = type + ':end'
+        gestures[type] = false
+      }
+    }
+    if (change) {
+      parent.emit(change, this)
+      socket.emit('gesture', {type: change, hand: this.name})
+    }
+  }
+})
 
 var fingers = []
 var hands = []
@@ -375,17 +444,9 @@ var RIGHT = new Hand('right')
 // Translate fingers 1/2 the distance to where the camera frame shape says the
 // finger has moved in X and Y directions, and 1/6 the distane in the Z
 // direction, reduce jitter.
-var xSmoothing = 1 // 2
-var ySmoothing = 1 // 2
-var zSmoothing = 1 // 6
-
-function cleanCoords(o) {
-  return {
-    x: o.x.toFixed(4) * 1,
-    y: o.y.toFixed(4) * 1,
-    z: o.z.toFixed(4) * 1
-  }
-}
+var xSmoothing = 2 // 2
+var ySmoothing = 2 // 2
+var zSmoothing = 3 // 6
 
 function getDistance(a, b) {
   var x = b.x - a.x, y = b.y - a.y, z = b.z - a.z

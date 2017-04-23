@@ -22,9 +22,9 @@ export default class Fingers extends React.Component {
     this.state = {
       fingers: {
         "left-index-finger": { color: '#ee0', position: {} },
-        "left-thumb-finger": { color: '#282', position: {} },
+        "left-thumb-finger": { color: '#285', position: {} },
         "right-index-finger": { color: '#ee0', position: {} },
-        "right-thumb-finger": { color: '#282', position: {} },
+        "right-thumb-finger": { color: '#285', position: {} },
       }
     }
 
@@ -32,6 +32,9 @@ export default class Fingers extends React.Component {
     window.moveFinger = function(data) {
       that.state.fingers[data.id].position = { x: data.x, y: data.y, z: data.z }
       that.setState(that.state)
+    }
+    window.emit = function(type, data) {
+      console.log(type, data)
     }
   }
 

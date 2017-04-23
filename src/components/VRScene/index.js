@@ -3,7 +3,7 @@ import 'aframe'
 import 'aframe-teleport-controls'
 import 'super-hands'
 
-// Libraries used by MathworldVR (Three.js, A-Frame, etc.)
+// Libraries used by Plop3D (Three.js, A-Frame, etc.)
 import 'lib'
 
 import React from 'react'
