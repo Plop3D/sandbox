@@ -3,10 +3,27 @@ import {Entity} from "aframe-react";
 
 class Finger extends React.Component {
   render() {
+    const radius = window.isMobile ? 0.08 : 0.16
     return <Entity
       id={this.props.id}
-      geometry={{ primitive: "sphere", radius: 0.1 }}
+      geometry={{ primitive: "sphere", radius: radius }}
       material={{ color: this.props.color }}
+      position={{
+        x: this.props.position.x,
+        y: this.props.position.y,
+        z: this.props.position.z
+      }}
+    />
+  }
+}
+
+class Hand extends React.Component {
+  render() {
+    const radius = window.isMobile ? 0.04 : 0.08
+    return <Entity
+      id={this.props.id}
+      geometry={{ primitive: "sphere", radius: radius }}
+      material={{ color: "#eee" }}
       position={{
         x: this.props.position.x,
         y: this.props.position.y,
@@ -25,15 +42,23 @@ export default class Fingers extends React.Component {
         "left-thumb-finger": { color: '#285', position: {} },
         "right-index-finger": { color: '#ee0', position: {} },
         "right-thumb-finger": { color: '#285', position: {} },
+      },
+      hands: {
+        "left-hand": { position: {} },
+        "right-hand": { position: {} }
       }
     }
 
     let that = this
-    window.moveFinger = function(data) {
+    window.moveFinger = (data) => {
       that.state.fingers[data.id].position = { x: data.x, y: data.y, z: data.z }
       that.setState(that.state)
     }
-    window.emit = function(type, data) {
+    window.moveHand = (data) => {
+      that.state.hands[data.id].position = { x: data.x, y: data.y, z: data.z }
+      that.setState(that.state)
+    }
+    window.emit = (type, data) => {
       console.log(type, data)
     }
   }
@@ -48,6 +73,14 @@ export default class Fingers extends React.Component {
         color={finger.color}
         position={finger.position}/>)
     }
-    return <Entity>{fingers}</Entity>
+    let hands = []
+    for (let handName in this.state.hands) {
+      let hand = this.state.hands[handName]
+      hands.push(<Hand
+        id={handName}
+        key={handName}
+        position={hand.position}/>)
+    }
+    return <Entity>{fingers}{hands}</Entity>
   }
 }

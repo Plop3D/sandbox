@@ -8,6 +8,7 @@ import {
   RightController,
   Fingers,
   Camera,
+  Primitives,
   LoginBox
 } from 'components'
 
@@ -43,6 +44,7 @@ class App extends React.Component {
           <Camera>
             <Fingers/>
           </Camera>
+          <Primitives />
         </VRScene>
       </div>
     )
