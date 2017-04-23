@@ -7,30 +7,12 @@ import {
   LeftController,
   RightController,
   Plane,
-  Finger
+  Fingers,
+  Camera
 } from 'components'
 import {AttentionBox, Calculator, FunctionBox, ParametricFunction, SettingsPanel} from 'containers'
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      fingers: {
-        "left-index-finger": { color: '#ee0', position: '0 0 0' },
-        "left-index-thumb": { color: '#282', position: '0 0 0' },
-        "right-index-finger": { color: '#12c', position: '0 0 0' },
-        "right-index-thumb": { color: '#12c', position: '0 0 0' },
-      }
-    }
-
-    let that = this
-    window.moveFinger = function(data) {
-      let fingers = {}
-      fingers[data.id] = { position: data.x + ' ' + data.y + ' ' + data.z }
-      that.setState({ fingers: fingers })
-    }
-  }
-
   componentDidMount() {
     injectGlobal`
       body {
@@ -43,14 +25,6 @@ class App extends React.Component {
   }
 
   render() {
-    let fingers = []
-    for (let fingerName in this.state.fingers) {
-      let finger = this.state.fingers[fingerName]
-      fingers.push(<Finger
-        key={fingerName}
-        color={finger.color}
-        position={finger.position}/>)
-    }
     return (
       <div>
         <iframe src="/video" style={{
@@ -62,29 +36,16 @@ class App extends React.Component {
           zIndex: 9999
         }}/>
         <VRScene>
-          <AttentionBox />
           <LeftController />
           <RightController />
-
-          <FunctionBox>
-            { /* Function mesh with grid */ }
-            <ParametricFunction />
-          </FunctionBox>
-
-          <Calculator />
-
-          <SettingsPanel
-            name="Function settings"
-            position={{ x: -0.37, y: 1.93, z: -0.34 }}
-            rotation={{ x: 10, y: 30, z: 0 }}
-            scale={{ x: 0.5, y: 0.5, z: 0.5 }}
-          />
-
           <Sky />
           <Lights />
           <Plane />
-
-          {fingers}
+          <Camera position='0 1.6 0' data-aframe-default-camera rotation
+                  wasd-controls look-controls aframe-injected
+                  scale visible>
+            <Fingers/>
+          </Camera>
         </VRScene>
       </div>
     )

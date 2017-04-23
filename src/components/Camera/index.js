@@ -3,7 +3,9 @@ import { Entity } from 'aframe-react'
 
 const Camera = (props) => {
   return (
-    <Entity camera="" {...props} />
+    <Entity camera="" {...props}>
+      { props.children }
+    </Entity>
   )
 }
 
