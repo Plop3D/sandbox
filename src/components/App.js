@@ -7,7 +7,8 @@ import {
   LeftController,
   RightController,
   Fingers,
-  Camera
+  Camera,
+  Primitives
 } from 'components'
 import {AttentionBox, SettingsPanel} from 'containers'
 
@@ -44,6 +45,7 @@ class App extends React.Component {
                   scale visible>
             <Fingers/>
           </Camera>
+          <Primitives />
         </VRScene>
       </div>
     )

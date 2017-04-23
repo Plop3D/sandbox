@@ -1,3 +1,5 @@
+window.isMobile = /Android|iP(hone|ad)/.test(navigator.userAgent)
+
 // Pixel objects.
 var pixels
 
@@ -213,18 +215,28 @@ Cute.ready(function () {
       color.shapes = []
       var paths = color.paths
       var l = paths.length
+      paths = paths.sort(function (a, b) {
+        return b.score - a.score
+      })
       Cute.each(paths, function (path) {
         Cute.each(path.pixels, function (pixel) {
           pixel.path = null
         })
       })
-      for (var i = l - 1; i > 0; i--) {
-
-      }
       paths = paths.sort(function (a, b) {
         return b.score - a.score
-      })
-      paths = paths.slice(0, 2)
+      }).slice(0, 2)
+
+      var first = paths[0]
+      var last = paths[1]
+      if (first && last) {
+        var d = getDistance2d(first, last)
+        console.log(first, last, d)
+        if (d < first.radius) {
+          paths.pop()
+        }
+      }
+
       for (i = 0, l = paths.length; i < l; i++) {
         var path = paths[i]
         var pixels = path.pixels
@@ -241,9 +253,9 @@ Cute.ready(function () {
           var shape = new Point()
           var size = Math.max(path.radius * 2, 1) / width
           if (window.isMobile) {
-            shape.x = (path.x / width - 0.5) / size / 4
-            shape.y = (0.5 - path.y / height) / size / 4
-            shape.z = -0.1 / size
+            shape.x = (path.x / width - 0.5) / size / 8
+            shape.y = (0.5 - path.y / height) / size / 8
+            shape.z = -0.2 / size
           } else {
             shape.x = (0.5 - path.x / width) / size / 4
             shape.y = (0.5 - path.y / height) / size / 4
@@ -314,6 +326,7 @@ var Color = Cute.type(function (name, fingerName) {
   this.name = name
   this.fingerName = fingerName
   this.paths = []
+  this.fingers = []
   colors.push(this)
 }, {
   updateFingers: function () {
@@ -333,9 +346,22 @@ var Color = Cute.type(function (name, fingerName) {
         smoothPull(finger, shape)
         parent.moveFinger(finger)
       })
+    // If there's only one shape, move the nearest finger.
     } else if (shapes.length) {
-      // TODO: Allow pointing even if one hand has gone out of view (e.g. when
-      //       pressing a menu button).
+      var shape = shapes[0]
+      var near = 9e9
+      var nearFinger = 0
+      Cute.each(this.fingers, function (finger) {
+        var d = getDistance(shape, finger.hand)
+        if (d < near) {
+          near = d
+          nearFinger = finger
+        }
+      })
+      if (nearFinger) {
+        smoothPull(nearFinger, shape)
+        parent.moveFinger(nearFinger)
+      }
     }
   }
 })
@@ -362,12 +388,15 @@ var Finger = Cute.type(Point, function (type, color, hand) {
   //   hand.thumb === hand.fingers[0]
   //   hand.index === hand.fingers[1] ...
   hand.fingers.push(this)
+  color.fingers.push(this)
   hand[type] = this
 }, {})
 
 var Hand = Cute.type(Point, function (name) {
   this.i = hands.length
   this.name = name
+  // Be able to refer to the DOM element once it exists.
+  this.id = this.name + '-hand'
   this.fingers = []
   new Finger('thumb', GREEN, this)
   new Finger('index', YELLOW, this)
@@ -378,9 +407,16 @@ var Hand = Cute.type(Point, function (name) {
   update: function () {
     var thumb = this.fingers[0]
     var index = this.fingers[1]
-    this.x = (index.x + thumb.x) / 2
-    this.y = (index.y + thumb.y) / 2
-    this.z = (index.z + thumb.z) / 2
+    var x = (index.x + thumb.x) / 2
+    var y = (index.y + thumb.y) / 2
+    var z = (index.z + thumb.z) / 2
+    if (x === this.x && y === this.y && z === this.z) {
+      return
+    }
+    this.x = x
+    this.y = y
+    this.z = z
+    parent.moveHand(this)
     var dx = index.x - thumb.x
     var dy = index.y - thumb.y
     var dz = index.z - thumb.z
@@ -436,7 +472,6 @@ var Hand = Cute.type(Point, function (name) {
   }
 })
 
-var fingers = []
 var hands = []
 var LEFT = new Hand('left')
 var RIGHT = new Hand('right')
@@ -448,9 +483,14 @@ var xSmoothing = 2 // 2
 var ySmoothing = 2 // 2
 var zSmoothing = 3 // 6
 
-function getDistance(a, b) {
+function getDistance (a, b) {
   var x = b.x - a.x, y = b.y - a.y, z = b.z - a.z
   return Math.sqrt(x * x + y * y + z * z)
+}
+
+function getDistance2d (a, b) {
+  var x = b.x - a.x, y = b.y - a.y
+  return Math.sqrt(x * x + y * y)
 }
 
 // Pull a nearer to b.
