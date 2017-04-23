@@ -1,15 +1,15 @@
 import React from 'react'
-import { render } from 'react-dom'
-import { AppContainer } from 'react-hot-loader'
+import {render} from 'react-dom'
+import {AppContainer} from 'react-hot-loader'
 import configureStore from 'store/configureStore'
-import { Root } from 'containers'
+import {Root} from 'containers'
 
 const store = configureStore()
 const root = document.getElementById('app')
 
 const renderApp = () => (
   <AppContainer>
-    <Root store={store} />
+    <Root store={store}/>
   </AppContainer>
 )
 
