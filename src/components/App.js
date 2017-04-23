@@ -41,9 +41,7 @@ class App extends React.Component {
           <Sky />
           <Lights />
           <Plane />
-          <Camera position='0 1.6 0' data-aframe-default-camera rotation
-                  wasd-controls look-controls aframe-injected
-                  scale visible>
+          <Camera>
             <Fingers/>
           </Camera>
         </VRScene>
