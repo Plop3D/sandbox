@@ -7,9 +7,9 @@ import {
   LeftController,
   RightController,
   Fingers,
-  Camera
+  Camera,
+  LoginBox
 } from 'components'
-import {AttentionBox, SettingsPanel} from 'containers'
 
 class App extends React.Component {
   componentDidMount() {
@@ -33,13 +33,13 @@ class App extends React.Component {
           width: 240 + 'px',
           height: 180 + 'px',
           zIndex: 9999
-        }}/>
+        }} frameBorder="0"/>
         <VRScene>
+          <LoginBox/>
           <LeftController />
           <RightController />
           <Sky />
           <Lights />
-          <Plane />
           <Camera>
             <Fingers/>
           </Camera>

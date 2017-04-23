@@ -9,7 +9,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const app = express();
 
 const passport = require('passport');
-const Strategy = require('passport-facebook').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 
 // Configure view engine to render EJS templates.
 app.set('views', __dirname + '/views');
@@ -26,41 +26,18 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Define routes.
-app.get('/sandbox',
-  function(req, res) {
-    res.render('home', { user: req.user });
-  });
-
-app.get('/login',
-  function(req, res) {
-    res.render('login');
-  });
+app.get('/login/facebook/return',
+  passport.authenticate('facebook', {
+    failureRedirect: '/login/facebook',
+    successReturnToOrRedirect: '/'
+  }));
 
 app.get('/login/facebook',
   passport.authenticate('facebook'));
 
-app.get('/login/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
-
 app.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res) {
-    res.render('profile', { user: req.user });
-  });
-
-app.get('/login/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
-
-app.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res) {
+  require('connect-ensure-login').ensureLoggedIn('/login/facebook'),
+  function(req, res, next) {
     res.render('profile', { user: req.user });
   });
 
@@ -75,10 +52,11 @@ const callbackURL = isDevelopment
 // behalf, along with the user's profile.  The function must invoke `cb`
 // with a user object, which will be set at `req.user` in route handlers after
 // authentication.
-passport.use(new Strategy({
-    clientID: "1821853544798226",
-    clientSecret: "7511005ea02d7a27808bd53fa5882937",
-    callbackURL: callbackURL
+passport.use(new FacebookStrategy({
+    clientID: "181225919065425",
+    clientSecret: "803b15ed3c25d68a712bdb790b96c0e6",
+    callbackURL: callbackURL,
+    profileFields: ['id', 'displayName', 'photos', 'email']
   },
   function(accessToken, refreshToken, profile, cb) {
     // In this example, the user's Facebook profile is supplied as the user
@@ -109,7 +87,9 @@ if (isDevelopment) {
   const compiler = require('webpack')(config);
   const webpackMiddleware = createWebpackMiddleware(compiler, config);
   webpackMiddleware(pack);
-  app.use('/', pack)
+  app.use('/',
+    require('connect-ensure-login').ensureLoggedIn('/login/facebook'),
+    pack)
   const https = require('https')
   const fs = require('fs')
   const key = fs.readFileSync('config/ssl.key')
@@ -129,9 +109,11 @@ if (isDevelopment) {
   router.get('/video', function(req, res) {
     res.sendFile(path.resolve(config.output.path + '/video.html'))
   });
-  router.get('/', function(req, res) {
-    res.sendFile(path.resolve(config.output.path + '/index.html'))
-  });
+  router.get('/',
+    require('connect-ensure-login').ensureLoggedIn('/login/facebook'),
+    function(req, res) {
+      res.sendFile(path.resolve(config.output.path + '/index.html'))
+    });
   app.use(router)
   app.use(express.static(path.resolve(config.output.path)));
 }

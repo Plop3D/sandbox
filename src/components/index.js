@@ -1,5 +1,5 @@
 export App from './App'
-export AttentionBox from './AttentionBox'
+export LoginBox from './LoginBox'
 export Camera from './Camera'
 export LeftController from './LeftController'
 export Lights from './Lights'

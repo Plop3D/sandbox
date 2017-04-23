@@ -1,8 +1,8 @@
-<p>
-ID: <%= user.id %><br/>
-Username: <%= user.username %><br/>
-Name: <%= user.displayName %><br/>
-<% if (user.emails) { %>
-Email: <%= user.emails[0].value %><br/>
-<% } %>
-</p>
+<div style="background: rgba(0, 0, 0, 0.85); position: relative; left: -50%; width: 270px; padding: 20px; margin: 20px">
+<span style="color: #fff; textAlign: right; right: 10px">
+    <a href="#" onclick="parent.closeLoginBox()" style="color: #81d1ef">Close [x]</a>
+  </span>
+  <h3 style="color: #fff; margin: 0 auto; textAlign: center; marginTop: 10">
+    Welcome&nbsp;<%= user.displayName.split(' ')[0] %></h3>
+  <img alt="<%= user.displayName %>" src="<%= user.photos[0].value %>"/>
+</div>
